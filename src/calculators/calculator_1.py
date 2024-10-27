@@ -29,7 +29,7 @@ class Calculator1:
 
     def __validate_body(self, body: Dict) -> float:
         if "number" not in body:
-            raise Exception("number is required") # verifica se o body enviado pelo cliente contem o campo 'number'
+            raise Exception("body is badly formatted") # verifica se o body enviado pelo cliente contem o campo 'number'
 
         input_data = body["number"]
         return input_data
