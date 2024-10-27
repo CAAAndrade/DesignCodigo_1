@@ -13,7 +13,6 @@ def test_calculate():
     calculator_2 = Calculator2()
 
     formatted_response = calculator_2.calculate(mock_request)
-    print(formatted_response)
 
     assert isinstance(formatted_response, dict)
-    # assert formatted_response == {'data': {'Calculator': 2, 'result': 0.08}}
+    assert formatted_response == {'data': {'Calculator': 2, 'Result': 0.08}}
