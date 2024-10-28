@@ -1,8 +1,7 @@
 
-from .calculator_2 import Calculator2
+from .calculator_3 import Calculator3
+from pytest import raises
 from typing import Dict, List
-from src.drivers.numpy_handler import NumpyHandler
-from src.drivers.interfaces.driver_handler_interface import DriverHandlerInterface
 
 
 class MockRequest:
@@ -10,30 +9,29 @@ class MockRequest:
         self.json = body
 
 
-class MockDriver(DriverHandlerInterface):
-    def standard_deviation(self, numbers: List[float]) -> float:
+class MockDriverHandlerError:
+    def variance(self, numbers: List[float]) -> float:
         return 3
 
-# testa a integração entre o driver(NumpyHandler) e o calculador
+class MockDriverHandler:
+    def variance(self, numbers: List[float]) -> float:
+        return 1000000
 
 
-def test_calculate_integration():
-    mock_request = MockRequest({"numbers": [2.12, 4.62, 1.32]})
-    driver = NumpyHandler()
-    calculator_2 = Calculator2(driver)
+def test_calculate_with_variance_error():
+    mock_request = MockRequest({"numbers": [1, 2, 3, 4, 5]})
+    calculator_3 = Calculator3(MockDriverHandlerError())
 
-    formatted_response = calculator_2.calculate(mock_request)
+    with raises(Exception) as excinfo:
+        calculator_3.calculate(mock_request)
 
-    assert isinstance(formatted_response, dict)
-    assert formatted_response == {'data': {'Calculator': 2, 'Result': 0.08}}
-
+    assert str(excinfo.value) == "Falha no processo. Variância menor que a multiplicação"
 
 def test_calculate():
-    mock_request = MockRequest({"numbers": [2.12, 4.62, 1.32]})
-    driver = MockDriver()
-    calculator_2 = Calculator2(driver)
+    mock_request = MockRequest({"numbers": [1, 1, 1, 1, 100]})
+    calculator_3 = Calculator3(MockDriverHandler())
 
-    formatted_response = calculator_2.calculate(mock_request)
-
-    assert isinstance(formatted_response, dict)
-    assert formatted_response == {'data': {'Calculator': 2, 'Result': 0.33}}
+    response = calculator_3.calculate(mock_request)
+    assert response == {'data': {'Calculator': 3, 'value': 1000000, 'success': True}}
+    print()
+    print(response)
