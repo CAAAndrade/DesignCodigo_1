@@ -1,12 +1,13 @@
 from flask import request as FlaskRequest
 from typing import Dict
+from src.errors.http_unprocessable_entity import HttpUnprocessableEntityError
 
 
 class Calculator1:
     '''	
         Primeira Calculadora
         * Um numero é dividido em 3 partes iguais.
-        * A primeira parteé dividida por 4 e seu resultado somado a 7. Após isso, o resultado é
+        * A primeira parte é dividida por 4 e seu resultado somado a 7. Após isso, o resultado é
             elevado ao quadrado e multiplicado por um valor de 0.257.
         * A segunda parteé elevada a potência de 2.121, dividida por 5 e somado a 1
         * A terceira parte se mantem no mesmo valor.
@@ -29,7 +30,7 @@ class Calculator1:
 
     def __validate_body(self, body: Dict) -> float:
         if "number" not in body:
-            raise Exception("body is badly formatted") # verifica se o body enviado pelo cliente contem o campo 'number'
+            raise HttpUnprocessableEntityError("body is badly formatted") # verifica se o body enviado pelo cliente contem o campo 'number'
 
         input_data = body["number"]
         return input_data

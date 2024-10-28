@@ -11,6 +11,7 @@ Dica: Utilize a lib Numpy para calcular o desvio padrão
 from flask import request as FlaskRequest
 from typing import Dict, List
 from src.drivers.interfaces.driver_handler_interface import DriverHandlerInterface
+from src.errors.http_unprocessable_entity import HttpUnprocessableEntityError
 
 
 class Calculator2:
@@ -30,7 +31,7 @@ class Calculator2:
     def __validate_body(self, body: Dict) -> List[float]:
         if "numbers" not in body:
             # verifica se o body enviado pelo cliente contem o campo 'numbers'
-            raise Exception("body is badly formatted")
+            raise HttpUnprocessableEntityError("body is badly formatted")
 
         input_data = body["numbers"]
         return input_data
