@@ -2,6 +2,6 @@
 from src.calculators.calculator_1 import Calculator1
 
 
-def calculator2_factory():
+def calculator1_factory():
     calc = Calculator1()
     return calc
